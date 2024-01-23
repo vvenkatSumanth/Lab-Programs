@@ -1,0 +1,117 @@
+//write a program to create a singly linked list that maintain a list of names in alphabetical order.implement the following operation on the list
+//a.insert a new name
+//b.delete a specified name
+
+
+
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+typedef struct node
+{
+        char name[50];
+        struct node *next;
+}node;
+
+ node *head= NULL;
+
+void insert(char *name);
+void delete(char *name);
+void display();
+
+int main()
+{
+        int choice;
+        char name[50];
+        while(1)
+        {
+                printf("\n1.insert a name");
+                printf("\n2.delete name");
+                printf("\n3.display the list");
+                printf("\n4.exit");
+                printf("\nenter your choice:");
+                scanf("%d",&choice);
+                switch(choice)
+                {
+                        case 1:printf("enter the name to be inserted:");
+                                scanf("%s",name);
+                                insert(name);
+                                break;
+                        case 2:printf("enter the name to be deleted:");
+                               scanf("%s",name);
+                               delete(name);
+                               break;
+                       case 3: display();
+                                        break;
+                       case 4:exit(1);
+                                       break;
+                                default:printf("invalid");
+                }
+        }
+}
+
+
+
+
+                void insert(char *name)
+                {
+                        node *newnode =(node *)malloc(sizeof(node));
+                        strcpy(newnode->name,name);
+                        newnode->next = NULL;
+                        if(head == NULL || strcmp(head->name,name) >=0)
+                        {
+                                newnode->next =head;
+                                head = newnode;
+                        }
+                        else
+                        {
+                                node *current = head;
+                                while (current->next != NULL &&strcmp(current->next->name,name)< 0)
+                                {
+                                        current = current->next;
+                                }
+                                newnode->next = current->next;
+                                current->next = newnode;
+                        }
+                }
+
+
+                        void delete(char *name)
+                        {
+                                node *temp =head, *prev;
+                                if(temp != NULL && strcmp(temp->name,name) ==0)
+                                {
+                                        head = temp->next;
+                                       free(temp);
+                                        return;
+                                }
+                                while(temp != NULL && strcmp(temp->name,name) !=0)
+                                {
+                                        prev = temp;
+                                        temp =temp->next;
+                                }
+                                if(temp == NULL)
+                                {
+                                        printf("given name not found");
+                                        return;
+                                }
+                                prev->next =temp->next;
+                                free(temp);
+                        }
+
+
+                        void display()
+                        {
+                                node *ptr = head;
+                                printf("\nname in the list:");
+                                while(ptr != NULL)
+                                {
+                                        printf("%s",ptr->name);
+                                        ptr =ptr->next;
+                                }
+                        }
+
+
+
